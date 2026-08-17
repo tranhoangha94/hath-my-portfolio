@@ -4,8 +4,10 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import ChatWidget from "@/components/ChatWidget";
+import CallFab from "@/components/CallFab";
 import { getLocale } from "@/i18n/get-locale";
 import { getUi } from "@/i18n/ui";
+import { profileShared } from "@/data/profile";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = getLocale();
@@ -38,6 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <Footer locale={locale} t={t.footer} cv={t.cv} />
         <ScrollToTop label={t.nav.scrollTop} />
+        <CallFab phone={profileShared.phoneRaw} label={t.footer.call} />
         <ChatWidget locale={locale} t={t.chat} />
       </body>
     </html>
