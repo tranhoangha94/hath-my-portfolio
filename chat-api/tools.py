@@ -134,36 +134,46 @@ def tool_get_experience(locale: Locale) -> str:
 def tool_get_skills(locale: Locale) -> str:
     return _pick(
         """
-        ### AI / LLM
-        - Streaming SSE, RAG, prompt/context, pgvector
-        - Tool-calling, Langfuse, OR-Tools CP-SAT
+        ### Technical skills
 
-        ### Frontend
-        - React, Next.js, Vue, Angular, TypeScript
-        - Redux/Saga, Tailwind, Ant Design, MUI
+        **AI / LLM**
+        - LLM Streaming (SSE), RAG, prompt/context, pgvector
+        - Tool-calling & Guardrails, Langfuse, OR-Tools CP-SAT
 
-        ### Backend
-        - Node.js, Express, NestJS, Prisma
+        **Frontend**
+        - ReactJS, NextJS, VueJS, Angular, TypeScript
+        - Redux/Saga, Pinia, Tailwind, Ant Design, MUI
 
-        ### Khác
-        - Docker, GitLab CI/CD, Jest / Selenium / CodeceptJS
-        - English B1
+        **Backend**
+        - Node.js, Express, NestJS, Prisma, RESTful API
+
+        **Testing & DevOps**
+        - Jest, CodeceptJS, Selenium, Docker, GitLab CI/CD
+
+        **Khác**
+        - DSA: Array, String, Stack, Queue, Sorting, DFS, BFS
+        - Figma, Postman, Jira, Cursor AI, English B1
         """,
         """
-        ### AI / LLM
-        - SSE streaming, RAG, prompt/context, pgvector
-        - Tool-calling, Langfuse, OR-Tools CP-SAT
+        ### Technical skills
 
-        ### Frontend
-        - React, Next.js, Vue, Angular, TypeScript
-        - Redux/Saga, Tailwind, Ant Design, MUI
+        **AI / LLM**
+        - LLM Streaming (SSE), RAG, prompt/context, pgvector
+        - Tool-calling & Guardrails, Langfuse, OR-Tools CP-SAT
 
-        ### Backend
-        - Node.js, Express, NestJS, Prisma
+        **Frontend**
+        - ReactJS, NextJS, VueJS, Angular, TypeScript
+        - Redux/Saga, Pinia, Tailwind, Ant Design, MUI
 
-        ### Also
-        - Docker, GitLab CI/CD, Jest / Selenium / CodeceptJS
-        - English B1
+        **Backend**
+        - Node.js, Express, NestJS, Prisma, RESTful API
+
+        **Testing & DevOps**
+        - Jest, CodeceptJS, Selenium, Docker, GitLab CI/CD
+
+        **Also**
+        - DSA: Array, String, Stack, Queue, Sorting, DFS, BFS
+        - Figma, Postman, Jira, Cursor AI, English B1
         """,
         locale,
     )
@@ -307,16 +317,42 @@ def tool_get_projects(locale: Locale) -> str:
 
 def tool_refuse_off_topic(locale: Locale) -> str:
     return _pick(
-        "Tôi chỉ có thể trả lời thông tin nằm trong Portfolio và CV của Hà, vui lòng hỏi câu khác.",
-        "I can only answer information from Ha’s Portfolio and CV. Please ask something else.",
+        """
+        Tôi chỉ có thể trả lời thông tin nằm trong Portfolio và CV của Hà, vui lòng hỏi câu khác.
+
+        Ví dụ: học vấn, technical skills, kinh nghiệm, dự án, liên hệ.
+        """,
+        """
+        I can only answer information from Ha’s Portfolio and CV. Please ask something else.
+
+        For example: education, technical skills, experience, projects, contact.
+        """,
         locale,
     )
 
 
 def tool_greet(locale: Locale) -> str:
     return _pick(
-        "Xin chào, tôi là trợ lý của Hà, tôi có thể giúp gì cho bạn ?",
-        "Hello, I’m Ha’s assistant. How can I help you?",
+        """
+        Xin chào, tôi là trợ lý của Hà, tôi có thể giúp gì cho bạn ?
+
+        Bạn có thể hỏi:
+        - Hà tốt nghiệp trường nào?
+        - Technical skills của Hà?
+        - Kinh nghiệm làm việc?
+        - Dự án AI Academic Advisor?
+        - Liên hệ Hà như thế nào?
+        """,
+        """
+        Hello, I’m Ha’s assistant. How can I help you?
+
+        You can ask:
+        - Where did Ha graduate?
+        - What are Ha’s technical skills?
+        - Work experience?
+        - AI Academic Advisor project?
+        - How can I contact Ha?
+        """,
         locale,
     )
 
@@ -359,7 +395,13 @@ TOOLS: list[dict] = [
     {
         "name": "get_skills",
         "description": "Technical skills and tech stack.",
-        "phrases": ["ky nang", "stack", "cong nghe", "skills", "tech stack", "react", "nextjs", "frontend", "backend", "manh nhat", "gioi gi"],
+        "phrases": [
+            "ky nang", "ky nang ky thuat", "ky nang chuyen mon", "chuyen mon",
+            "stack", "cong nghe", "cong nghe su dung",
+            "skill", "skills", "technical skill", "technical skills", "tech skill",
+            "tech stack", "technical", "react", "nextjs", "frontend", "backend",
+            "manh nhat", "gioi gi",
+        ],
         "run": tool_get_skills,
     },
     {

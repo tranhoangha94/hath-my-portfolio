@@ -59,7 +59,7 @@ export const ui = {
     chat: {
       title: "Hỏi về Hà",
       subtitle: "Chatbot RAG · kinh nghiệm, dự án, kỹ năng",
-      hello: "Xin chào, tôi là trợ lý của Hà, tôi có thể giúp gì cho bạn ?",
+      hello: "Xin chào, tôi là trợ lý của Hà, tôi có thể giúp gì cho bạn ?\n\nBạn có thể hỏi:\n- Hà tốt nghiệp trường nào?\n- Technical skills của Hà?\n- Kinh nghiệm làm việc?\n- Dự án AI Academic Advisor?\n- Liên hệ Hà như thế nào?",
       placeholder: "Hỏi gì về Hà…",
       send: "Gửi",
       close: "Đóng chat",
@@ -145,7 +145,7 @@ export const ui = {
     chat: {
       title: "Ask about Ha",
       subtitle: "RAG chatbot · experience, projects, skills",
-      hello: "Hello, I’m Ha’s assistant. How can I help you?",
+      hello: "Hello, I’m Ha’s assistant. How can I help you?\n\nYou can ask:\n- Where did Ha graduate?\n- What are Ha’s technical skills?\n- Work experience?\n- AI Academic Advisor project?\n- How can I contact Ha?",
       placeholder: "Ask about Ha…",
       send: "Send",
       close: "Close chat",
