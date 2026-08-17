@@ -21,7 +21,7 @@ export default function Footer({
           {t.headlineBefore} <span className="grad-text">AI</span> {t.headlineAfter}
         </h2>
         <p>{t.sub}</p>
-        <CvDownloads t={cv} id="cv" />
+        <CvDownloads t={cv} />
         <div className="foot-links">
           <a className="btn btn-primary" href={`mailto:${profile.email}`}>
             {t.email}

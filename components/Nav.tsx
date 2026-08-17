@@ -96,7 +96,10 @@ export default function Nav({ locale, t }: { locale: Locale; t: UiDict["nav"] })
           <Link href="/#experience" onClick={close}>{t.experience}</Link>
           <Link href="/#projects" onClick={close}>{t.projects}</Link>
           <Link href="/#education" onClick={close}>{t.education}</Link>
-          <Link href="/#cv" onClick={close}>{t.cv}</Link>
+          <Link href="/cv" className="nav-cv" onClick={close}>
+            <span className="nav-cv-star" aria-hidden="true">★</span>
+            {t.cv}
+          </Link>
           <Link href="/#contact" onClick={close}>{t.contact}</Link>
         </div>
         <div className="nav-end">

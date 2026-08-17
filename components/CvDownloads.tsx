@@ -1,5 +1,5 @@
+import Link from "next/link";
 import { DownloadIcon } from "./Icons";
-import { cvFiles } from "@/data/cv";
 import type { UiDict } from "@/i18n/ui";
 
 export default function CvDownloads({
@@ -15,12 +15,12 @@ export default function CvDownloads({
         <DownloadIcon />
         {t.label}
       </span>
-      <a className="cv-btn" href={cvFiles.vi.href} download={cvFiles.vi.filename}>
+      <Link className="cv-btn" href="/cv?lang=vi">
         {t.vi}
-      </a>
-      <a className="cv-btn" href={cvFiles.en.href} download={cvFiles.en.filename}>
+      </Link>
+      <Link className="cv-btn" href="/cv?lang=en">
         {t.en}
-      </a>
+      </Link>
     </div>
   );
 }
