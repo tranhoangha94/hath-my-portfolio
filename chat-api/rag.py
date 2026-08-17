@@ -68,6 +68,20 @@ def _cosine(a: np.ndarray, b: np.ndarray) -> np.ndarray:
     return a_norm @ b_norm
 
 
+async def _ollama_embed_many(client: httpx.AsyncClient, texts: list[str]) -> list[list[float]]:
+    r = await client.post(
+        f"{OLLAMA_URL}/api/embed",
+        json={"model": EMBED_MODEL, "input": texts},
+        timeout=300,
+    )
+    if r.status_code == 200:
+        data = r.json()
+        embeddings = data.get("embeddings") or []
+        if len(embeddings) == len(texts):
+            return embeddings
+    return [await _ollama_embed(client, text) for text in texts]
+
+
 async def ensure_index() -> None:
     global _chunks, _vectors
     if _vectors is not None:
@@ -75,9 +89,7 @@ async def ensure_index() -> None:
     text = KNOWLEDGE_PATH.read_text(encoding="utf-8")
     _chunks = _split_chunks(text)
     async with httpx.AsyncClient() as client:
-        vecs = []
-        for chunk in _chunks:
-            vecs.append(await _ollama_embed(client, chunk))
+        vecs = await _ollama_embed_many(client, _chunks)
     _vectors = np.array(vecs, dtype=np.float32)
 
 

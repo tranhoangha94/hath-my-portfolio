@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import os
 from typing import Literal
 
@@ -38,12 +39,17 @@ class ChatOut(BaseModel):
     reply: str
 
 
-@app.on_event("startup")
-async def startup() -> None:
+async def _warm_index() -> None:
     try:
         await ensure_index()
+        print("[chat-api] index ready")
     except Exception as exc:
         print(f"[chat-api] index warmup skipped: {exc}")
+
+
+@app.on_event("startup")
+async def startup() -> None:
+    asyncio.create_task(_warm_index())
 
 
 @app.get("/health")
