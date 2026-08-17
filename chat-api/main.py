@@ -1,14 +1,16 @@
 from __future__ import annotations
 
 import asyncio
+import json
 import os
 from typing import Literal
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
-from rag import CHAT_MODEL, EMBED_MODEL, generate, ensure_index
+from rag import CHAT_MODEL, generate, generate_stream, warm_model
 
 app = FastAPI(title="Ha Portfolio Chat")
 
@@ -39,22 +41,21 @@ class ChatOut(BaseModel):
     reply: str
 
 
-async def _warm_index() -> None:
+async def _warm() -> None:
     try:
-        await ensure_index()
-        print("[chat-api] index ready")
+        await warm_model()
     except Exception as exc:
-        print(f"[chat-api] index warmup skipped: {exc}")
+        print(f"[chat-api] warmup skipped: {exc}")
 
 
 @app.on_event("startup")
 async def startup() -> None:
-    asyncio.create_task(_warm_index())
+    asyncio.create_task(_warm())
 
 
 @app.get("/health")
 async def health() -> dict:
-    return {"ok": True, "chat_model": CHAT_MODEL, "embed_model": EMBED_MODEL}
+    return {"ok": True, "chat_model": CHAT_MODEL, "retrieve": "faq+lexical"}
 
 
 @app.post("/chat", response_model=ChatOut)
@@ -64,3 +65,21 @@ async def chat(body: ChatIn) -> ChatOut:
         return ChatOut(reply=reply)
     except Exception as exc:
         raise HTTPException(status_code=503, detail=f"Chat backend unavailable: {exc}") from exc
+
+
+@app.post("/chat/stream")
+async def chat_stream(body: ChatIn) -> StreamingResponse:
+    async def events():
+        yield ": ping\n\n"
+        try:
+            async for delta in generate_stream(body.message.strip(), body.locale):
+                yield f"data: {json.dumps({'delta': delta}, ensure_ascii=False)}\n\n"
+            yield "data: {\"done\":true}\n\n"
+        except Exception as exc:
+            yield f"data: {json.dumps({'error': str(exc)})}\n\n"
+
+    return StreamingResponse(
+        events(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )

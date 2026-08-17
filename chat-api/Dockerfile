@@ -4,8 +4,9 @@ ENV PIP_BREAK_SYSTEM_PACKAGES=1 \
     PYTHONUNBUFFERED=1 \
     OLLAMA_HOST=127.0.0.1:11434 \
     OLLAMA_KEEP_ALIVE=24h \
+    OLLAMA_MAX_LOADED_MODELS=1 \
+    OLLAMA_NUM_PARALLEL=1 \
     CHAT_MODEL=qwen3:4b \
-    EMBED_MODEL=bge-m3 \
     PORT=8080
 
 RUN apt-get update && apt-get install -y --no-install-recommends \

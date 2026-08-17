@@ -83,25 +83,51 @@ export default function ChatWidget({ locale, t }: { locale: Locale; t: UiDict["c
     const text = input.trim();
     if (!text || busy) return;
     setInput("");
-    setMessages((m) => [...m, { role: "user", text }]);
+    setMessages((m) => [...m, { role: "user", text }, { role: "bot", text: "" }]);
     setBusy(true);
     const ctrl = new AbortController();
     const timer = setTimeout(() => ctrl.abort(), 180_000);
     try {
-      const res = await fetch(`${API}/chat`, {
+      const res = await fetch(`${API}/chat/stream`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text, locale }),
         signal: ctrl.signal,
       });
-      const data = await res.json().catch(() => ({}));
-      const reply =
-        res.ok && typeof data.reply === "string"
-          ? data.reply
-          : t.error;
-      setMessages((m) => [...m, { role: "bot", text: reply }]);
+      if (!res.ok || !res.body) {
+        setMessages((m) => [...m.slice(0, -1), { role: "bot", text: t.error }]);
+        return;
+      }
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = "";
+      let reply = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        const parts = buf.split("\n\n");
+        buf = parts.pop() ?? "";
+        for (const part of parts) {
+          const line = part.split("\n").find((row) => row.startsWith("data: "));
+          if (!line) continue;
+          const data = JSON.parse(line.slice(6)) as { delta?: string; done?: boolean; error?: string };
+          if (data.error) {
+            setMessages((m) => [...m.slice(0, -1), { role: "bot", text: t.error }]);
+            return;
+          }
+          if (data.delta) {
+            reply += data.delta;
+            const snapshot = reply;
+            setMessages((m) => [...m.slice(0, -1), { role: "bot", text: snapshot }]);
+          }
+        }
+      }
+      if (!reply.trim()) {
+        setMessages((m) => [...m.slice(0, -1), { role: "bot", text: t.error }]);
+      }
     } catch {
-      setMessages((m) => [...m, { role: "bot", text: t.offline }]);
+      setMessages((m) => [...m.slice(0, -1), { role: "bot", text: t.offline }]);
     } finally {
       clearTimeout(timer);
       setBusy(false);
@@ -175,12 +201,16 @@ export default function ChatWidget({ locale, t }: { locale: Locale; t: UiDict["c
             </button>
           </div>
           <div className="chat-list" ref={listRef}>
-            {messages.map((msg, i) => (
-              <div key={i} className={`chat-bubble ${msg.role}`}>
-                {msg.text}
-              </div>
-            ))}
-            {busy && <div className="chat-bubble bot typing">{t.thinking}</div>}
+            {messages.map((msg, i) =>
+              msg.text ? (
+                <div key={i} className={`chat-bubble ${msg.role}`}>
+                  {msg.text}
+                </div>
+              ) : null,
+            )}
+            {busy && !messages.at(-1)?.text && (
+              <div className="chat-bubble bot typing">{t.thinking}</div>
+            )}
           </div>
           <form
             className="chat-form"

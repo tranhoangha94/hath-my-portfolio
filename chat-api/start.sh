@@ -39,9 +39,8 @@ HTTPServer(("0.0.0.0", int(os.environ.get("PORT", "8080"))), H).serve_forever()
 PY
 BOOT_PID=$!
 
-echo "Pulling models (first boot can take several minutes)..."
+echo "Pulling chat model (first boot can take several minutes)..."
 ollama pull "${CHAT_MODEL:-qwen3:4b}"
-ollama pull "${EMBED_MODEL:-bge-m3}"
 
 kill "$BOOT_PID" 2>/dev/null || true
 wait "$BOOT_PID" 2>/dev/null || true
