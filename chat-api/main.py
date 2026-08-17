@@ -33,7 +33,7 @@ app.add_middleware(
 
 
 class ChatIn(BaseModel):
-    message: str = Field(min_length=1, max_length=800)
+    message: str = Field(min_length=1, max_length=8000)
     locale: Literal["vi", "en"] = "vi"
 
 

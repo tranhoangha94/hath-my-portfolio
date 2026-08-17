@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import ChatMarkdown from "@/components/ChatMarkdown";
 import { ChatBotIcon } from "@/components/Icons";
 import type { Locale } from "@/i18n/config";
 import type { UiDict } from "@/i18n/ui";
@@ -224,7 +225,7 @@ export default function ChatWidget({ locale, t }: { locale: Locale; t: UiDict["c
             {messages.map((msg, i) =>
               msg.text ? (
                 <div key={i} className={`chat-bubble ${msg.role}`}>
-                  {msg.text}
+                  {msg.role === "bot" ? <ChatMarkdown text={msg.text} /> : msg.text}
                 </div>
               ) : null,
             )}
@@ -243,7 +244,7 @@ export default function ChatWidget({ locale, t }: { locale: Locale; t: UiDict["c
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={t.placeholder}
-              maxLength={800}
+              maxLength={2000}
               disabled={busy}
             />
             <button type="submit" disabled={busy || !input.trim()}>

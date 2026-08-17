@@ -8,7 +8,7 @@ from pathlib import Path
 
 import httpx
 
-from tools import execute_tool, is_off_topic, ollama_tool_schema, parse_tool_call, route_tool, _norm
+from tools import execute_tool, ollama_tool_schema, parse_tool_call, route_tool, should_refuse, _norm
 
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://127.0.0.1:11434").rstrip("/")
 CHAT_MODEL = os.getenv("CHAT_MODEL", "qwen3:4b")
@@ -64,9 +64,9 @@ def _tool_payload(question: str) -> dict:
             {
                 "role": "system",
                 "content": (
-                    "You route questions about Trần Hoàng Hà’s portfolio. "
+                    "You route questions about Trần Hoàng Hà’s CV and portfolio only. "
                     "Call exactly one tool. Never answer in natural language. "
-                    "If the question is not about him, call refuse_off_topic."
+                    "If it is troll, rude, meaningless, or not in the CV/portfolio, call refuse_off_topic."
                 ),
             },
             {"role": "user", "content": question},
@@ -93,7 +93,7 @@ async def _ollama_pick_tool(question: str) -> str:
 
 
 async def generate_stream(question: str, locale: str) -> AsyncIterator[str]:
-    if is_off_topic(question):
+    if should_refuse(question):
         print("[chat-api] guardrail refuse")
         yield execute_tool("refuse_off_topic", locale)
         return
@@ -102,14 +102,8 @@ async def generate_stream(question: str, locale: str) -> AsyncIterator[str]:
         print(f"[chat-api] tool {name}")
         yield execute_tool(name, locale)
         return
-    print(f"[chat-api] llm router: {question!r}")
-    try:
-        name = await _ollama_pick_tool(question)
-    except Exception as exc:
-        print(f"[chat-api] llm router failed: {exc}")
-        name = "refuse_off_topic"
-    print(f"[chat-api] tool {name}")
-    yield execute_tool(name, locale)
+    print(f"[chat-api] unmatched: {question!r}")
+    yield execute_tool("refuse_off_topic", locale)
 
 
 async def generate(question: str, locale: str) -> str:

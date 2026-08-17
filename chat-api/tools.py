@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import unicodedata
 from collections.abc import Callable
+from textwrap import dedent
 
 Locale = str
 
@@ -14,147 +15,300 @@ def _norm(text: str) -> str:
 
 
 def _pick(vi: str, en: str, locale: Locale) -> str:
-    return vi if locale.startswith("vi") else en
+    text = vi if locale.startswith("vi") else en
+    return dedent(text).strip()
 
 
 def tool_get_intro(locale: Locale) -> str:
     return _pick(
-        "Trần Hoàng Hà là AI Engineer · Fullstack Developer, hơn 5 năm làm phần mềm, "
-        "đang chuyển sâu sang AI (LLM, RAG). Hiện intern Lab Coach tại VinUni (Vingroup Applied AI) "
-        "và AI Engineering Trainee từ 05/2026. Có thể xem CV tại trang /cv hoặc email tranhoangha94@gmail.com.",
-        "Tran Hoang Ha is an AI Engineer · Fullstack Developer with 5+ years in software, "
-        "now focusing on applied AI (LLM, RAG). He is a Lab Coach intern at VinUni (Vingroup Applied AI) "
-        "and an AI Engineering Trainee since May 2026. CV is on /cv, or email tranhoangha94@gmail.com.",
+        """
+        ### Trần Hoàng Hà
+        **AI Engineer · Fullstack Developer**
+
+        - Hơn 5 năm làm phần mềm, đang chuyển sâu sang AI (LLM, RAG)
+        - Intern Lab Coach tại VinUni (Vingroup Applied AI)
+        - AI Engineering Trainee từ 05/2026
+
+        Xem CV tại [/cv](/cv) hoặc email [tranhoangha94@gmail.com](mailto:tranhoangha94@gmail.com).
+        """,
+        """
+        ### Tran Hoang Ha
+        **AI Engineer · Fullstack Developer**
+
+        - 5+ years in software, now focusing on applied AI (LLM, RAG)
+        - Lab Coach intern at VinUni (Vingroup Applied AI)
+        - AI Engineering Trainee since May 2026
+
+        CV: [/cv](/cv) · email [tranhoangha94@gmail.com](mailto:tranhoangha94@gmail.com).
+        """,
         locale,
     )
 
 
 def tool_get_contact(locale: Locale) -> str:
     return _pick(
-        "Liên hệ Hà qua email tranhoangha94@gmail.com hoặc gọi 0362 044 038. "
-        "Địa chỉ: CT4A Mễ Trì Thượng, Nam Từ Liêm, Hà Nội. "
-        "CV tiếng Việt và English nằm ở trang /cv trên portfolio.",
-        "Reach Ha at tranhoangha94@gmail.com or 0362 044 038. "
-        "Address: CT4A Me Tri Thuong, Nam Tu Liem, Hanoi. "
-        "Vietnamese and English CVs are on the /cv page.",
+        """
+        ### Liên hệ
+
+        - Email: [tranhoangha94@gmail.com](mailto:tranhoangha94@gmail.com)
+        - Điện thoại: [0362 044 038](tel:0362044038)
+        - Địa chỉ: CT4A Mễ Trì Thượng, Nam Từ Liêm, Hà Nội
+        - CV: [tiếng Việt & English](/cv)
+        """,
+        """
+        ### Contact
+
+        - Email: [tranhoangha94@gmail.com](mailto:tranhoangha94@gmail.com)
+        - Phone: [0362 044 038](tel:0362044038)
+        - Address: CT4A Me Tri Thuong, Nam Tu Liem, Hanoi
+        - CV: [Vietnamese & English](/cv)
+        """,
         locale,
     )
 
 
 def tool_get_education(locale: Locale) -> str:
     return _pick(
-        "Hà tốt nghiệp PTIT (2012–2017), ngành CNTT — Kỹ thuật phần mềm. "
-        "Năm 2026 theo chương trình Vingroup Applied AI Talent (VinUni AI20K, Build Phase, Team 163): "
-        "LLM, RAG, tool-calling, Langfuse, Docker, Vercel, Railway. "
-        "Team 163 làm V University Portal + AI Academic Advisor. "
-        "Chứng chỉ 12/2021: freeCodeCamp JS Algorithms, Frontend Libraries, English Pre-Intermediate.",
-        "Ha graduated from PTIT (2012–2017), Information Technology — Software Engineering. "
-        "In 2026 he joined the Vingroup Applied AI Talent Program (VinUni AI20K, Build Phase, Team 163): "
-        "LLM, RAG, tool-calling, Langfuse, Docker, Vercel, Railway. "
-        "Team 163 built V University Portal + AI Academic Advisor. "
-        "Certificates (12/2021): freeCodeCamp JS Algorithms, Frontend Libraries, English Pre-Intermediate.",
+        """
+        ### Học vấn
+        - Tốt nghiệp **PTIT** (2012–2017)
+        - Ngành CNTT — Kỹ thuật phần mềm
+
+        ### VinUni AI20K (2026)
+        - Vingroup Applied AI Talent · Build Phase · Team 163
+        - LLM, RAG, tool-calling, Langfuse, Docker, Vercel, Railway
+        - Team 163: V University Portal + AI Academic Advisor
+
+        ### Chứng chỉ (12/2021)
+        - freeCodeCamp JS Algorithms
+        - Frontend Libraries
+        - English Pre-Intermediate
+        """,
+        """
+        ### Education
+        - Graduated **PTIT** (2012–2017)
+        - Information Technology — Software Engineering
+
+        ### VinUni AI20K (2026)
+        - Vingroup Applied AI Talent · Build Phase · Team 163
+        - LLM, RAG, tool-calling, Langfuse, Docker, Vercel, Railway
+        - Team 163: V University Portal + AI Academic Advisor
+
+        ### Certificates (12/2021)
+        - freeCodeCamp JS Algorithms
+        - Frontend Libraries
+        - English Pre-Intermediate
+        """,
         locale,
     )
 
 
 def tool_get_experience(locale: Locale) -> str:
     return _pick(
-        "Hiện tại: Lab Coach intern tại VinUni (từ 14/07/2026) và AI Engineering Trainee "
-        "Vingroup Applied AI (từ 28/05/2026). Trước đó Frontend tại FPT Software (10/2023–01/2026), "
-        "KIAI Soft (06–09/2023), VMO Holding (05/2021–04/2023), "
-        "và Samsung SVMC (Fresher → Junior, 04/2017–08/2020).",
-        "Currently: Lab Coach intern at VinUni (since 14 Jul 2026) and AI Engineering Trainee "
-        "in the Vingroup Applied AI program (since 28 May 2026). Previously Frontend at "
-        "FPT Software (Oct 2023–Jan 2026), KIAI Soft (Jun–Sep 2023), VMO Holding (May 2021–Apr 2023), "
-        "and Samsung SVMC (Fresher → Junior, Apr 2017–Aug 2020).",
+        """
+        ### Hiện tại
+        - Lab Coach intern — VinUni (từ 14/07/2026)
+        - AI Engineering Trainee — Vingroup Applied AI (từ 28/05/2026)
+
+        ### Trước đó
+        - Frontend — FPT Software (10/2023–01/2026)
+        - KIAI Soft (06–09/2023)
+        - VMO Holding (05/2021–04/2023)
+        - Samsung SVMC — Fresher → Junior (04/2017–08/2020)
+        """,
+        """
+        ### Now
+        - Lab Coach intern — VinUni (since 14 Jul 2026)
+        - AI Engineering Trainee — Vingroup Applied AI (since 28 May 2026)
+
+        ### Previously
+        - Frontend — FPT Software (Oct 2023–Jan 2026)
+        - KIAI Soft (Jun–Sep 2023)
+        - VMO Holding (May 2021–Apr 2023)
+        - Samsung SVMC — Fresher → Junior (Apr 2017–Aug 2020)
+        """,
         locale,
     )
 
 
 def tool_get_skills(locale: Locale) -> str:
     return _pick(
-        "AI/LLM: streaming SSE, RAG, prompt/context, pgvector, tool-calling, Langfuse, OR-Tools CP-SAT. "
-        "Frontend: React, Next.js, Vue, Angular, TypeScript, Redux/Saga, Tailwind, Ant Design, MUI. "
-        "Backend: Node.js, Express, NestJS, Prisma. "
-        "Thêm Docker, GitLab CI/CD, Jest/Selenium/CodeceptJS. English B1.",
-        "AI/LLM: SSE streaming, RAG, prompt/context, pgvector, tool-calling, Langfuse, OR-Tools CP-SAT. "
-        "Frontend: React, Next.js, Vue, Angular, TypeScript, Redux/Saga, Tailwind, Ant Design, MUI. "
-        "Backend: Node.js, Express, NestJS, Prisma. Also Docker, GitLab CI/CD, Jest/Selenium/CodeceptJS. English B1.",
+        """
+        ### AI / LLM
+        - Streaming SSE, RAG, prompt/context, pgvector
+        - Tool-calling, Langfuse, OR-Tools CP-SAT
+
+        ### Frontend
+        - React, Next.js, Vue, Angular, TypeScript
+        - Redux/Saga, Tailwind, Ant Design, MUI
+
+        ### Backend
+        - Node.js, Express, NestJS, Prisma
+
+        ### Khác
+        - Docker, GitLab CI/CD, Jest / Selenium / CodeceptJS
+        - English B1
+        """,
+        """
+        ### AI / LLM
+        - SSE streaming, RAG, prompt/context, pgvector
+        - Tool-calling, Langfuse, OR-Tools CP-SAT
+
+        ### Frontend
+        - React, Next.js, Vue, Angular, TypeScript
+        - Redux/Saga, Tailwind, Ant Design, MUI
+
+        ### Backend
+        - Node.js, Express, NestJS, Prisma
+
+        ### Also
+        - Docker, GitLab CI/CD, Jest / Selenium / CodeceptJS
+        - English B1
+        """,
         locale,
     )
 
 
 def tool_get_academic_advisor(locale: Locale) -> str:
     return _pick(
-        "AI Academic Advisor (V University Portal) là dự án AI flagship hiện tại, Team 163, VinUni AI20K 2026. "
-        "Hà làm Fullstack: check tiên quyết, Study Planner (OR-Tools CP-SAT), chat RAG trên tài liệu quy chế. "
-        "Stack: Next.js, FastAPI, Supabase pgvector, OpenAI, Docker, Vercel, Railway, Langfuse. "
-        "Demo: https://c2-app-163.vercel.app/",
-        "AI Academic Advisor (V University Portal) is his current AI flagship, Team 163, VinUni AI20K 2026. "
-        "He was Fullstack: prerequisite checks, Study Planner (OR-Tools CP-SAT), RAG chat over regulation docs. "
-        "Stack: Next.js, FastAPI, Supabase pgvector, OpenAI, Docker, Vercel, Railway, Langfuse. "
-        "Live: https://c2-app-163.vercel.app/",
+        """
+        ### AI Academic Advisor
+        Flagship hiện tại · Team 163 · VinUni AI20K 2026
+
+        - Fullstack: check tiên quyết, Study Planner (OR-Tools CP-SAT)
+        - Chat RAG trên tài liệu quy chế
+        - Stack: Next.js, FastAPI, Supabase pgvector, OpenAI, Docker, Vercel, Railway, Langfuse
+        - Demo: [c2-app-163.vercel.app](https://c2-app-163.vercel.app/)
+        """,
+        """
+        ### AI Academic Advisor
+        Current flagship · Team 163 · VinUni AI20K 2026
+
+        - Fullstack: prerequisite checks, Study Planner (OR-Tools CP-SAT)
+        - RAG chat over regulation docs
+        - Stack: Next.js, FastAPI, Supabase pgvector, OpenAI, Docker, Vercel, Railway, Langfuse
+        - Live: [c2-app-163.vercel.app](https://c2-app-163.vercel.app/)
+        """,
         locale,
     )
 
 
 def tool_get_ai_mentor(locale: Locale) -> str:
     return _pick(
-        "AI Mentor (09/2025–11/2025): hệ thống đào tạo AI, sinh khóa học/đề thi từ tài liệu, "
-        "doanh nghiệp lớn dùng (gồm Techcombank). Hà là Frontend Developer (không phải Fullstack) trong team 14, "
-        "trước khi học AI chính thức. Tech: Next.js, NestJS, Prisma, Material UI, Lexical.",
-        "AI Mentor (Sep–Nov 2025): AI training platform that generates courses/exams from documents, "
-        "used by enterprises including Techcombank. Ha was Frontend Developer (not Fullstack) on a team of 14, "
-        "before formally studying AI. Tech: Next.js, NestJS, Prisma, Material UI, Lexical.",
+        """
+        ### AI Mentor
+        09/2025–11/2025
+
+        - Hệ thống đào tạo AI, sinh khóa học/đề thi từ tài liệu
+        - Doanh nghiệp lớn dùng (gồm Techcombank)
+        - Hà: Frontend Developer (không phải Fullstack), team 14 — trước khi học AI chính thức
+        - Tech: Next.js, NestJS, Prisma, Material UI, Lexical
+        """,
+        """
+        ### AI Mentor
+        Sep–Nov 2025
+
+        - AI training platform that generates courses/exams from documents
+        - Used by enterprises including Techcombank
+        - Ha: Frontend Developer (not Fullstack) on a team of 14, before formally studying AI
+        - Tech: Next.js, NestJS, Prisma, Material UI, Lexical
+        """,
         locale,
     )
 
 
 def tool_get_llm_chat(locale: Locale) -> str:
     return _pick(
-        "LLM Chat (05/2025–08/2025): chatbot LLM nội bộ doanh nghiệp, hỏi đáp tài liệu, streaming realtime. "
-        "Hà là Frontend duy nhất, team 6. React 18, Vite, Antd, Tailwind, ReadableStream, redux-saga, EventChannel, Docker, GitLab CI/CD.",
-        "LLM Chat (May–Aug 2025): internal enterprise LLM chatbot for document Q&A with realtime streaming. "
-        "Ha was the sole Frontend on a team of 6. React 18, Vite, Antd, Tailwind, ReadableStream, redux-saga, EventChannel, Docker, GitLab CI/CD.",
+        """
+        ### LLM Chat
+        05/2025–08/2025
+
+        - Chatbot LLM nội bộ doanh nghiệp, hỏi đáp tài liệu, streaming realtime
+        - Hà: Frontend duy nhất, team 6
+        - Tech: React 18, Vite, Antd, Tailwind, ReadableStream, redux-saga, EventChannel, Docker, GitLab CI/CD
+        """,
+        """
+        ### LLM Chat
+        May–Aug 2025
+
+        - Internal enterprise LLM chatbot for document Q&A with realtime streaming
+        - Ha: sole Frontend on a team of 6
+        - Tech: React 18, Vite, Antd, Tailwind, ReadableStream, redux-saga, EventChannel, Docker, GitLab CI/CD
+        """,
         locale,
     )
 
 
 def tool_get_vibecode(locale: Locale) -> str:
     return _pick(
-        "VibeCode (làm một mình): Chord Detection (AI nhận chord guitar, đang phát triển), Ride Together, "
-        "World Cup Live 2026, TFT Best Suggestion, Ô ăn quan, Hahoot (quiz + AI), Xe tăng 390. "
-        "Các app đều lên Vercel; Chord Detection cũng nằm nhóm dự án AI Engineer.",
-        "Solo VibeCode apps: Chord Detection (AI guitar chords, in development), Ride Together, "
-        "World Cup Live 2026, TFT Best Suggestion, O an quan, Hahoot (quiz + AI), Xe tang 390. "
-        "All are on Vercel; Chord Detection is also listed as an AI Engineer project.",
+        """
+        ### VibeCode
+        Làm một mình · các app đều trên Vercel
+
+        - Chord Detection — AI nhận chord guitar (đang phát triển, cũng thuộc nhóm AI Engineer)
+        - Ride Together
+        - World Cup Live 2026
+        - TFT Best Suggestion
+        - Ô ăn quan
+        - Hahoot (quiz + AI)
+        - Xe tăng 390
+        """,
+        """
+        ### VibeCode
+        Solo apps, all on Vercel
+
+        - Chord Detection — AI guitar chords (in development; also listed as an AI Engineer project)
+        - Ride Together
+        - World Cup Live 2026
+        - TFT Best Suggestion
+        - O an quan
+        - Hahoot (quiz + AI)
+        - Xe tang 390
+        """,
         locale,
     )
 
 
 def tool_get_projects(locale: Locale) -> str:
     return _pick(
-        "Nhóm AI: AI Academic Advisor (flagship, https://c2-app-163.vercel.app/), Chord Detection. "
-        "Frontend: AI Mentor (Techcombank), LLM Chat streaming, plus dự án FPT/VMO/SVMC "
-        "(Map OSS, OSS1, Customer Care, Genius, IGV, Icook, Bixby…). "
-        "VibeCode: Ride Together, Hahoot, Ô ăn quan, Xe tăng 390, TFT, World Cup Live. "
-        "Chi tiết từng dự án nằm ở tab Projects trên site.",
-        "AI: AI Academic Advisor (flagship, https://c2-app-163.vercel.app/) and Chord Detection. "
-        "Frontend: AI Mentor (Techcombank), LLM Chat streaming, plus FPT/VMO/SVMC work "
-        "(Map OSS, OSS1, Customer Care, Genius, IGV, Icook, Bixby…). "
-        "VibeCode: Ride Together, Hahoot, O an quan, Xe tang 390, TFT, World Cup Live. "
-        "Each project has its own page under Projects.",
+        """
+        ### AI
+        - [AI Academic Advisor](https://c2-app-163.vercel.app/) (flagship)
+        - Chord Detection
+
+        ### Frontend
+        - AI Mentor (Techcombank)
+        - LLM Chat streaming
+        - FPT / VMO / SVMC: Map OSS, OSS1, Customer Care, Genius, IGV, Icook, Bixby…
+
+        ### VibeCode
+        - Ride Together, Hahoot, Ô ăn quan, Xe tăng 390, TFT, World Cup Live
+
+        Chi tiết từng dự án nằm ở tab **Projects** trên site.
+        """,
+        """
+        ### AI
+        - [AI Academic Advisor](https://c2-app-163.vercel.app/) (flagship)
+        - Chord Detection
+
+        ### Frontend
+        - AI Mentor (Techcombank)
+        - LLM Chat streaming
+        - FPT / VMO / SVMC: Map OSS, OSS1, Customer Care, Genius, IGV, Icook, Bixby…
+
+        ### VibeCode
+        - Ride Together, Hahoot, O an quan, Xe tang 390, TFT, World Cup Live
+
+        Each project has its own page under **Projects**.
+        """,
         locale,
     )
 
 
 def tool_refuse_off_topic(locale: Locale) -> str:
     return _pick(
-        "Mình chỉ trả lời về Trần Hoàng Hà — học vấn, kinh nghiệm, kỹ năng, dự án và cách liên hệ. "
-        "Câu hỏi này nằm ngoài phạm vi đó, nên mình xin phép không trả lời. "
-        "Bạn hỏi về Hà giúp mình nhé, hoặc email tranhoangha94@gmail.com.",
-        "I only answer questions about Tran Hoang Ha — education, experience, skills, projects, and contact. "
-        "This is outside that scope, so I’ll pass. Ask about Ha, or email tranhoangha94@gmail.com.",
+        "Tôi chỉ có thể trả lời thông tin nằm trong Portfolio và CV của Hà, vui lòng hỏi câu khác.",
+        "I can only answer information from Ha’s Portfolio and CV. Please ask something else.",
         locale,
     )
 
@@ -240,13 +394,15 @@ TOOLS: list[dict] = [
     },
     {
         "name": "refuse_off_topic",
-        "description": "Politely refuse questions not about Tran Hoang Ha’s profile.",
+        "description": "Refuse troll, rude, meaningless, overlong, or non-CV/portfolio questions.",
         "phrases": [],
         "run": tool_refuse_off_topic,
     },
 ]
 
 _RUNNERS: dict[str, Callable[[str], str]] = {str(t["name"]): t["run"] for t in TOOLS}
+
+MAX_QUESTION_CHARS = 2000
 
 OFF_TOPIC = [
     "thoi tiet", "weather", "nhiet do", "bong da hom nay", "ty so",
@@ -258,11 +414,28 @@ OFF_TOPIC = [
     "chatgpt", "openai api key", "prompt injection",
 ]
 
-ON_TOPIC = [
-    "ha", "hoang", "portfolio", "cv", "du an", "hoc van", "kinh nghiem",
-    "ky nang", "lien he", "ptit", "fpt", "samsung", "mentor", "vibecode",
-    "academic", "tran hoang", "fullstack", "ai engineer", "tot nghiep",
-    "cong ty", "vinuni", "svmc", "vmo", "kiai",
+NOT_IN_CV = [
+    "nguoi yeu", "ban gai", "ban trai", "crush", "ket hon", "ly hon", "doc than",
+    "bo me", "gia dinh", "con cai", "hon nhan", "sinh nam", "nam sinh",
+    "bao nhieu tuoi", "bao tuoi", "sinh nhat", "birthday", "how old",
+    "chieu cao", "can nang", "so do", "luong", "thu nhap", "salary", "bao nhieu tien",
+    "ton giao", "theo dao", "facebook", "instagram", "tiktok", "zalo",
+    "so thich", "hobby", "thich an", "mon an yeu thich",
+]
+
+RUDE = [
+    "dit me", "ditme", "dmm", "dm may", "clgt", "vcl", "suc vat",
+    "oc cho", "oc heo", "do ngu", "ngu vl", "ngu qua", "bot ngu", "chatbot ngu",
+    "do dien", "khon nan", "rac ruoi", "do ngoc",
+    "fuck", "fucking", "shit", "bitch", "asshole", "stupid", "idiot", "stfu",
+    "shut up", "fuck you", "dumb bot",
+]
+
+TROLL = [
+    "nguoi ngoai hanh tinh", "alien", "sieu nhan", "batman", "iron man",
+    "ke chuyen cuoi", "hat di", "do vui", "cau do", "1+1", "2+2",
+    "bao nhieu bang", "ai dep hon", "ha co phai bot", "troll",
+    "lam tho", "viet van", "dich sang", "ke mot cau",
 ]
 
 
@@ -309,15 +482,62 @@ def route_tool(question: str) -> str | None:
     return best_name
 
 
-def is_off_topic(question: str) -> bool:
+def _has_any(question: str, flags: list[str]) -> bool:
     q = _norm(question)
-    if any(flag in q for flag in OFF_TOPIC):
+    return any(flag in q for flag in flags)
+
+
+def is_rude(question: str) -> bool:
+    return _has_any(question, RUDE)
+
+
+def is_troll(question: str) -> bool:
+    q = _norm(question)
+    if any(flag in q for flag in TROLL):
+        return True
+    letters = "".join(ch for ch in q if ch.isalpha())
+    return letters in {"haha", "hahaha", "hahahaha", "lol", "lmao", "wkwk", "kkkk", "kkkkk"}
+
+
+def is_nonsense(question: str) -> bool:
+    raw = question.strip()
+    if not raw:
+        return True
+    q = _norm(raw)
+    compact = "".join(ch for ch in q if ch.isalnum())
+    if len(compact) < 2:
+        return True
+    if compact.isdigit():
+        return True
+    letters = "".join(ch for ch in q if ch.isalpha())
+    if len(letters) >= 6:
+        if any(ch * 6 in letters for ch in set(letters)):
+            return True
+        if len(set(letters)) <= 2:
+            return True
+        vowels = sum(letters.count(v) for v in "aeiou")
+        if vowels == 0 and len(letters) >= 8:
+            return True
+    tokens = [tok for tok in q.split() if tok]
+    if len(tokens) >= 4 and len(set(tokens)) == 1:
+        return True
+    return False
+
+
+def is_off_topic(question: str) -> bool:
+    if _has_any(question, OFF_TOPIC) or _has_any(question, NOT_IN_CV):
         return True
     if route_tool(question):
         return False
-    if any(flag in q for flag in ON_TOPIC):
-        return False
     return True
+
+
+def should_refuse(question: str) -> bool:
+    if len(question) > MAX_QUESTION_CHARS:
+        return True
+    if is_rude(question) or is_troll(question) or is_nonsense(question):
+        return True
+    return is_off_topic(question)
 
 
 def parse_tool_call(message: dict) -> str | None:
