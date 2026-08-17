@@ -9,23 +9,13 @@ from pathlib import Path
 
 import httpx
 
-from faq import match_faq
+from faq import _norm, match_faq
 
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://127.0.0.1:11434").rstrip("/")
 CHAT_MODEL = os.getenv("CHAT_MODEL", "qwen3:4b")
 KNOWLEDGE_PATH = Path(__file__).parent / "knowledge.md"
 
 _chunks: list[str] = []
-_FOLD = str.maketrans(
-    "áàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ"
-    "ÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐ",
-    "aaaaaaaaaaaaaaaaaeeeeeeeeeeeiiiiiooooooooooooooooouuuuuuuuuuuyyyyyd"
-    "aaaaaaaaaaaaaaaaaeeeeeeeeeeeiiiiiooooooooooooooooouuuuuuuuuuuyyyyyd",
-)
-
-
-def _norm(text: str) -> str:
-    return text.lower().translate(_FOLD)
 
 
 def _tokens(text: str) -> set[str]:
@@ -112,6 +102,7 @@ async def generate_stream(question: str, locale: str) -> AsyncIterator[str]:
         print("[chat-api] faq hit")
         yield canned
         return
+    print(f"[chat-api] faq miss: {question!r}")
     payload = _payload(question, locale, stream=True)
     async with httpx.AsyncClient() as client:
         async with client.stream("POST", f"{OLLAMA_URL}/api/chat", json=payload, timeout=180) as response:

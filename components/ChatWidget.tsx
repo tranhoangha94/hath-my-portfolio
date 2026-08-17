@@ -95,7 +95,17 @@ export default function ChatWidget({ locale, t }: { locale: Locale; t: UiDict["c
         signal: ctrl.signal,
       });
       if (!res.ok || !res.body) {
-        setMessages((m) => [...m.slice(0, -1), { role: "bot", text: t.error }]);
+        const fallback = await fetch(`${API}/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text, locale }),
+          signal: ctrl.signal,
+        });
+        const data = await fallback.json().catch(() => ({}));
+        setMessages((m) => [
+          ...m.slice(0, -1),
+          { role: "bot", text: fallback.ok && typeof data.reply === "string" ? data.reply : t.error },
+        ]);
         return;
       }
       const reader = res.body.getReader();
@@ -124,7 +134,17 @@ export default function ChatWidget({ locale, t }: { locale: Locale; t: UiDict["c
         }
       }
       if (!reply.trim()) {
-        setMessages((m) => [...m.slice(0, -1), { role: "bot", text: t.error }]);
+        const fallback = await fetch(`${API}/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text, locale }),
+          signal: ctrl.signal,
+        });
+        const data = await fallback.json().catch(() => ({}));
+        setMessages((m) => [
+          ...m.slice(0, -1),
+          { role: "bot", text: fallback.ok && typeof data.reply === "string" ? data.reply : t.error },
+        ]);
       }
     } catch {
       setMessages((m) => [...m.slice(0, -1), { role: "bot", text: t.offline }]);

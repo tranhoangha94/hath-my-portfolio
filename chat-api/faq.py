@@ -1,15 +1,12 @@
 from __future__ import annotations
 
-_FOLD = str.maketrans(
-    "áàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ"
-    "ÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐ",
-    "aaaaaaaaaaaaaaaaaeeeeeeeeeeeiiiiiooooooooooooooooouuuuuuuuuuuyyyyyd"
-    "aaaaaaaaaaaaaaaaaeeeeeeeeeeeiiiiiooooooooooooooooouuuuuuuuuuuyyyyyd",
-)
+import unicodedata
 
 
 def _norm(text: str) -> str:
-    return text.lower().translate(_FOLD)
+    text = text.replace("đ", "d").replace("Đ", "d").lower()
+    stripped = unicodedata.normalize("NFKD", text)
+    return "".join(ch for ch in stripped if unicodedata.category(ch) != "Mn")
 
 FAQS: list[dict] = [
     {
@@ -52,7 +49,7 @@ FAQS: list[dict] = [
         "id": "education",
         "min": 1,
         "phrases": [
-            "hoc van", "tot nghiep", "ptit", "dai hoc", "truong hoc",
+            "hoc van", "tot nghiep", "ptit", "dai hoc", "truong",
             "vinuni", "ai20k", "chung chi", "education", "university",
             "certificate", "hoc o dau", "hoc o truong",
         ],
@@ -210,7 +207,7 @@ def match_faq(question: str, locale: str) -> str | None:
         score = sum(len(phrase) for phrase in matched)
         if score > best_hits:
             best = item
-            best_hits = hits
+            best_hits = score
     if not best:
         return None
     key = "vi" if locale.startswith("vi") else "en"
