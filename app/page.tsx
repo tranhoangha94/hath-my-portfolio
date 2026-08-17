@@ -17,13 +17,13 @@ export default function HomePage() {
     <>
       <section className="hero">
         <div className="wrap hero-inner">
-          <div>
-            <RoleBadge readyFor={t.hero.readyFor} />
-            <h1>
-              {profile.name}
-              <br />
-              <span className="grad-text">{profile.role}</span>
-            </h1>
+          <RoleBadge readyFor={t.hero.readyFor} />
+          <h1>
+            {profile.name}
+            <br />
+            <span className="grad-text">{profile.role}</span>
+          </h1>
+          <div className="hero-copy">
             <p className="role">{profile.heroRole}</p>
             <p className="lede">{profile.heroLede}</p>
             <div className="hero-cta">

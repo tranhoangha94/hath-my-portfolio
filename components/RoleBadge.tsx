@@ -17,8 +17,16 @@ export default function RoleBadge({ readyFor }: { readyFor: string }) {
   return (
     <div className="eyebrow">
       ● {readyFor}{" "}
-      <span className="eyebrow-role" key={index}>
-        {roles[index]}
+      <span className="eyebrow-roles" aria-live="polite">
+        {roles.map((role, i) => (
+          <span
+            key={role}
+            className={`eyebrow-role${i === index ? " is-on" : ""}`}
+            aria-hidden={i !== index}
+          >
+            {role}
+          </span>
+        ))}
       </span>
     </div>
   );
