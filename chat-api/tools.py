@@ -222,7 +222,7 @@ def tool_get_ai_mentor(locale: Locale) -> str:
         09/2025–11/2025
 
         - Hệ thống đào tạo AI, sinh khóa học/đề thi từ tài liệu
-        - Doanh nghiệp lớn dùng (gồm Techcombank)
+        - Dự án tại **FPT Smart Cloud**
         - Hà: Frontend Developer (không phải Fullstack), team 14 — trước khi học AI chính thức
         - Tech: Next.js, NestJS, Prisma, Material UI, Lexical
         """,
@@ -231,7 +231,7 @@ def tool_get_ai_mentor(locale: Locale) -> str:
         Sep–Nov 2025
 
         - AI training platform that generates courses/exams from documents
-        - Used by enterprises including Techcombank
+        - Built at **FPT Smart Cloud**
         - Ha: Frontend Developer (not Fullstack) on a team of 14, before formally studying AI
         - Tech: Next.js, NestJS, Prisma, Material UI, Lexical
         """,
@@ -299,7 +299,7 @@ def tool_get_projects(locale: Locale) -> str:
         - Chord Detection
 
         ### Frontend
-        - AI Mentor (Techcombank)
+        - AI Mentor (FPT Smart Cloud)
         - LLM Chat streaming
         - FPT / VMO / SVMC: Map OSS, OSS1, Customer Care, Genius, IGV, Icook, Bixby…
 
@@ -314,7 +314,7 @@ def tool_get_projects(locale: Locale) -> str:
         - Chord Detection
 
         ### Frontend
-        - AI Mentor (Techcombank)
+        - AI Mentor (FPT Smart Cloud)
         - LLM Chat streaming
         - FPT / VMO / SVMC: Map OSS, OSS1, Customer Care, Genius, IGV, Icook, Bixby…
 
@@ -430,8 +430,8 @@ TOOLS: list[dict] = [
     },
     {
         "name": "get_ai_mentor",
-        "description": "AI Mentor project used by Techcombank.",
-        "phrases": ["ai mentor", "techcombank", "khoa hoc"],
+        "description": "AI Mentor project at FPT Smart Cloud.",
+        "phrases": ["ai mentor", "fpt smart cloud", "smart cloud", "khoa hoc"],
         "run": tool_get_ai_mentor,
     },
     {

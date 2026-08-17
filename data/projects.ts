@@ -72,7 +72,7 @@ const meta: ProjectMeta[] = [
   {
     slug: "ai-mentor",
     category: "work",
-    title: "AI Mentor",
+    title: "AI Mentor — FPT Smart Cloud",
     period: "09/2025 – 11/2025",
     tech: ["NextJs", "NestJs", "Prisma", "Material UI", "Lexical editor", "Axios"],
   },
@@ -291,9 +291,9 @@ const vi: Record<string, ProjectCopy> = {
     team: "Team size 14",
     badge: "AI · Đào tạo doanh nghiệp",
     summary:
-      "Hệ thống đào tạo dùng AI: sinh khoá học/đề thi từ tài liệu, theo dõi tiến độ học tập. Đã được doanh nghiệp lớn sử dụng, bao gồm Techcombank.",
+      "Hệ thống đào tạo dùng AI tại FPT Smart Cloud: sinh khoá học/đề thi từ tài liệu, theo dõi tiến độ học tập.",
     description: [
-      "Xây dựng hệ thống đào tạo dùng AI giúp doanh nghiệp thiết kế chương trình học, sinh khoá học/đề thi từ tài liệu và theo dõi tiến độ học tập của nhân viên; đánh giá hiệu quả đào tạo. Sản phẩm đã được khách hàng doanh nghiệp lớn sử dụng, trong đó có Techcombank.",
+      "Xây dựng hệ thống đào tạo dùng AI tại FPT Smart Cloud, giúp doanh nghiệp thiết kế chương trình học, sinh khoá học/đề thi từ tài liệu và theo dõi tiến độ học tập của nhân viên; đánh giá hiệu quả đào tạo.",
     ],
     features: [
       "Tham gia phân tích nghiệp vụ, đề xuất giải pháp kỹ thuật cho các tính năng hệ thống.",
@@ -589,9 +589,9 @@ const en: Record<string, ProjectCopy> = {
     team: "Team of 14",
     badge: "AI · Enterprise training",
     summary:
-      "AI training system: generate courses/exams from documents and track learning progress. Used by large enterprises, including Techcombank.",
+      "AI training system at FPT Smart Cloud: generate courses/exams from documents and track learning progress.",
     description: [
-      "An AI training platform for enterprises to design programs, generate courses/exams from documents, and track employee progress. Adopted by large customers, including Techcombank.",
+      "An AI training platform at FPT Smart Cloud for enterprises to design programs, generate courses/exams from documents, and track employee progress.",
     ],
     features: [
       "Joined business analysis and proposed technical solutions for system features.",

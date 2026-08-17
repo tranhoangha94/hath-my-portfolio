@@ -500,7 +500,18 @@ footer p{color:var(--text-faint);font-size:14px;margin-bottom:26px;}
 .chat-head p{font-size:12px;color:var(--text-faint);margin-top:2px;}
 .chat-x{background:none;border:none;color:var(--text-dim);font-size:22px;cursor:pointer;line-height:1;}
 .chat-x:hover{color:var(--text);}
-.chat-list{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px;}
+.chat-list{
+  flex:1;overflow:auto;padding:14px 10px 14px 14px;display:flex;flex-direction:column;gap:10px;
+  scrollbar-width:thin;scrollbar-color:var(--border) transparent;
+}
+.chat-list::-webkit-scrollbar{width:6px;}
+.chat-list::-webkit-scrollbar-track{background:transparent;}
+.chat-list::-webkit-scrollbar-thumb{
+  background:var(--border);border-radius:8px;
+}
+.chat-list::-webkit-scrollbar-thumb:hover{background:var(--text-faint);}
+.chat-list::-webkit-scrollbar-button{width:0;height:0;display:none;}
+.chat-list::-webkit-scrollbar-corner{background:transparent;}
 .chat-bubble{
   max-width:92%;padding:10px 12px;border-radius:12px;font-size:13.5px;line-height:1.55;
 }

@@ -16,7 +16,7 @@ Fullstack Developer pivoting to AI Engineer. Builds real AI products (LLM, RAG, 
 - 5+ years software development, deep Frontend on large-scale apps and microservices
 - Frameworks: ReactJS, NextJS, VueJS, Angular
 - Backend: NodeJS (ExpressJS, NestJS), Prisma
-- AI products: LLM Chat (RAG + realtime streaming), AI Mentor (courses/exams from documents; used by Techcombank), AI Academic Advisor (study planning)
+- AI products: LLM Chat (RAG + realtime streaming), AI Mentor (FPT Smart Cloud; courses/exams from documents), AI Academic Advisor (study planning)
 - Frontend + LLM integration: SSE / ReadableStream, redux-saga, EventChannel
 - Architecture, REST APIs, multi-source data, K6 performance testing
 - Leadership and PM on freelance and internal work
@@ -88,7 +88,7 @@ Certificates (12/2021): freeCodeCamp JavaScript Algorithms and Data Structures; 
 
 ## Frontend work — AI Mentor
 - 09/2025 – 11/2025, Frontend Developer, team of 14
-- AI training system: generate courses/exams from documents, track progress. Used by large enterprises including Techcombank
+- AI training system at FPT Smart Cloud: generate courses/exams from documents, track progress.
 - He was Frontend Developer (not Fullstack) at that time, before formally studying AI
 - NextJs, NestJs, Prisma, Material UI, Lexical editor, Axios
 
