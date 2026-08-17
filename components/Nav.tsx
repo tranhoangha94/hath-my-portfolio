@@ -13,7 +13,7 @@ export default function Nav({ locale, t }: { locale: Locale; t: UiDict["nav"] })
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const lastY = useRef(0);
-  const hideTimer = useRef<ReturnType<typeof setTimeout>>();
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const openRef = useRef(open);
   const hovering = useRef(false);
   openRef.current = open;
@@ -21,11 +21,13 @@ export default function Nav({ locale, t }: { locale: Locale; t: UiDict["nav"] })
   const close = () => setOpen(false);
 
   useEffect(() => {
-    const clearHide = () => window.clearTimeout(hideTimer.current);
+    const clearHide = () => {
+      if (hideTimer.current) clearTimeout(hideTimer.current);
+    };
 
     const scheduleHide = () => {
       clearHide();
-      hideTimer.current = window.setTimeout(() => {
+      hideTimer.current = setTimeout(() => {
         if (window.scrollY > TOP_OFFSET && !openRef.current && !hovering.current) {
           setHidden(true);
         }
@@ -62,7 +64,7 @@ export default function Nav({ locale, t }: { locale: Locale; t: UiDict["nav"] })
   useEffect(() => {
     if (open) {
       setHidden(false);
-      window.clearTimeout(hideTimer.current);
+      if (hideTimer.current) clearTimeout(hideTimer.current);
     }
   }, [open]);
 
@@ -71,12 +73,12 @@ export default function Nav({ locale, t }: { locale: Locale; t: UiDict["nav"] })
       className={hidden ? "is-hidden" : undefined}
       onMouseEnter={() => {
         hovering.current = true;
-        window.clearTimeout(hideTimer.current);
+        if (hideTimer.current) clearTimeout(hideTimer.current);
       }}
       onMouseLeave={() => {
         hovering.current = false;
         if (window.scrollY > TOP_OFFSET && !openRef.current) {
-          hideTimer.current = window.setTimeout(() => {
+          hideTimer.current = setTimeout(() => {
             if (window.scrollY > TOP_OFFSET && !openRef.current && !hovering.current) {
               setHidden(true);
             }
