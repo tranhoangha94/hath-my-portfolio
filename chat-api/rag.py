@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import os
 import re
 import time
@@ -9,7 +8,7 @@ from pathlib import Path
 
 import httpx
 
-from faq import _norm, match_faq
+from tools import execute_tool, is_off_topic, ollama_tool_schema, parse_tool_call, route_tool, _norm
 
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://127.0.0.1:11434").rstrip("/")
 CHAT_MODEL = os.getenv("CHAT_MODEL", "qwen3:4b")
@@ -58,62 +57,59 @@ def strip_think(text: str) -> str:
     return cleaned.strip()
 
 
-def _payload(question: str, locale: str, stream: bool) -> dict:
-    context = retrieve(question)
-    context_block = "\n\n---\n\n".join(context)
-    lang = "Vietnamese" if locale.startswith("vi") else "English"
-    system = (
-        "You are Trần Hoàng Hà’s portfolio assistant in Hanoi. "
-        "Answer ONLY from the context. If it is not enough, say you do not know "
-        "and suggest emailing tranhoangha94@gmail.com. Do not invent facts. "
-        f"Reply in {lang}, 2–5 short sentences."
-    )
+def _tool_payload(question: str) -> dict:
     return {
         "model": CHAT_MODEL,
         "messages": [
-            {"role": "system", "content": system},
-            {"role": "user", "content": f"Context:\n{context_block}\n\nQuestion: {question}"},
+            {
+                "role": "system",
+                "content": (
+                    "You route questions about Trần Hoàng Hà’s portfolio. "
+                    "Call exactly one tool. Never answer in natural language. "
+                    "If the question is not about him, call refuse_off_topic."
+                ),
+            },
+            {"role": "user", "content": question},
         ],
-        "stream": stream,
+        "stream": False,
         "think": False,
         "keep_alive": "24h",
-        "options": {
-            "temperature": 0.2,
-            "num_predict": 180,
-            "num_ctx": 2048,
-        },
+        "tools": ollama_tool_schema(),
+        "options": {"temperature": 0, "num_predict": 64, "num_ctx": 1024},
     }
 
 
 async def warm_model() -> None:
     ensure_index()
-    started = time.perf_counter()
-    payload = _payload("who is Tran Hoang Ha?", "en", stream=False)
-    payload["options"]["num_predict"] = 8
+    print("[chat-api] tools+guardrails ready")
+
+
+async def _ollama_pick_tool(question: str) -> str:
     async with httpx.AsyncClient() as client:
-        r = await client.post(f"{OLLAMA_URL}/api/chat", json=payload, timeout=180)
+        r = await client.post(f"{OLLAMA_URL}/api/chat", json=_tool_payload(question), timeout=120)
         r.raise_for_status()
-    print(f"[chat-api] chat model warm in {time.perf_counter() - started:.1f}s")
+        message = r.json().get("message") or {}
+    return parse_tool_call(message) or "refuse_off_topic"
 
 
 async def generate_stream(question: str, locale: str) -> AsyncIterator[str]:
-    canned = match_faq(question, locale)
-    if canned:
-        print("[chat-api] faq hit")
-        yield canned
+    if is_off_topic(question):
+        print("[chat-api] guardrail refuse")
+        yield execute_tool("refuse_off_topic", locale)
         return
-    print(f"[chat-api] faq miss: {question!r}")
-    payload = _payload(question, locale, stream=True)
-    async with httpx.AsyncClient() as client:
-        async with client.stream("POST", f"{OLLAMA_URL}/api/chat", json=payload, timeout=180) as response:
-            response.raise_for_status()
-            async for line in response.aiter_lines():
-                if not line:
-                    continue
-                data = json.loads(line)
-                piece = data.get("message", {}).get("content") or ""
-                if piece:
-                    yield piece
+    name = route_tool(question)
+    if name:
+        print(f"[chat-api] tool {name}")
+        yield execute_tool(name, locale)
+        return
+    print(f"[chat-api] llm router: {question!r}")
+    try:
+        name = await _ollama_pick_tool(question)
+    except Exception as exc:
+        print(f"[chat-api] llm router failed: {exc}")
+        name = "refuse_off_topic"
+    print(f"[chat-api] tool {name}")
+    yield execute_tool(name, locale)
 
 
 async def generate(question: str, locale: str) -> str:

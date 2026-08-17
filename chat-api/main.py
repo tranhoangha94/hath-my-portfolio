@@ -55,7 +55,7 @@ async def startup() -> None:
 
 @app.get("/health")
 async def health() -> dict:
-    return {"ok": True, "chat_model": CHAT_MODEL, "retrieve": "faq+lexical"}
+    return {"ok": True, "chat_model": CHAT_MODEL, "router": "tools+guardrails"}
 
 
 @app.post("/chat", response_model=ChatOut)
