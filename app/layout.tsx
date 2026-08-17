@@ -3,6 +3,7 @@ import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
+import ChatWidget from "@/components/ChatWidget";
 import { getLocale } from "@/i18n/get-locale";
 import { getUi } from "@/i18n/ui";
 
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <Footer locale={locale} t={t.footer} cv={t.cv} />
         <ScrollToTop label={t.nav.scrollTop} />
+        <ChatWidget locale={locale} t={t.chat} />
       </body>
     </html>
   );
