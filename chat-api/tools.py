@@ -182,22 +182,34 @@ def tool_get_skills(locale: Locale) -> str:
 def tool_get_academic_advisor(locale: Locale) -> str:
     return _pick(
         """
-        ### AI Academic Advisor
-        Flagship hiện tại · Team 163 · VinUni AI20K 2026
+        ### Dự án nổi bật nhất
+        **AI Academic Advisor — V University Portal**
+        Flagship · Team 163 · VinUni AI20K 2026 · Fullstack
 
-        - Fullstack: check tiên quyết, Study Planner (OR-Tools CP-SAT)
-        - Chat RAG trên tài liệu quy chế
-        - Stack: Next.js, FastAPI, Supabase pgvector, OpenAI, Docker, Vercel, Railway, Langfuse
-        - Demo: [c2-app-163.vercel.app](https://c2-app-163.vercel.app/)
+        Cổng thông tin học vụ giúp sinh viên kiểm tra điều kiện tiên quyết, chọn môn và lập kế hoạch học tập hợp lệ. Study Planner dùng OR-Tools CP-SAT; Advisor Chat đọc tài liệu quy chế bằng RAG. Cố vấn duyệt kế hoạch nhanh hơn, admin quản lý môn học, chương trình và người dùng.
+
+        - Portal Next.js 16: 3 vai trò sinh viên / cố vấn / quản trị
+        - Backend FastAPI + Supabase pgvector, OpenAI, Langfuse
+        - Production: Frontend Vercel, Backend Railway
+
+        Xem chi tiết trên portfolio: [AI Academic Advisor](/projects/ai-academic-advisor)
+
+        Demo: [c2-app-163.vercel.app](https://c2-app-163.vercel.app/)
         """,
         """
-        ### AI Academic Advisor
-        Current flagship · Team 163 · VinUni AI20K 2026
+        ### Standout project
+        **AI Academic Advisor — V University Portal**
+        Flagship · Team 163 · VinUni AI20K 2026 · Fullstack
 
-        - Fullstack: prerequisite checks, Study Planner (OR-Tools CP-SAT)
-        - RAG chat over regulation docs
-        - Stack: Next.js, FastAPI, Supabase pgvector, OpenAI, Docker, Vercel, Railway, Langfuse
-        - Live: [c2-app-163.vercel.app](https://c2-app-163.vercel.app/)
+        An academic portal that helps students check prerequisites, pick courses, and build a valid study plan. The Study Planner uses OR-Tools CP-SAT; Advisor Chat answers from regulation docs via RAG. Advisors review plans faster, and admins manage courses, programs, and users.
+
+        - Next.js 16 portal with student / advisor / admin roles
+        - FastAPI + Supabase pgvector, OpenAI, Langfuse
+        - Production: Frontend on Vercel, backend on Railway
+
+        Project details: [AI Academic Advisor](/projects/ai-academic-advisor)
+
+        Live demo: [c2-app-163.vercel.app](https://c2-app-163.vercel.app/)
         """,
         locale,
     )
@@ -340,7 +352,8 @@ def tool_greet(locale: Locale) -> str:
         - Hà tốt nghiệp trường nào?
         - Technical skills của Hà?
         - Kinh nghiệm làm việc?
-        - Dự án AI Academic Advisor?
+        - Các dự án mà Hà đã làm?
+        - Dự án nổi bật nhất?
         - Liên hệ Hà như thế nào?
         """,
         """
@@ -350,7 +363,8 @@ def tool_greet(locale: Locale) -> str:
         - Where did Ha graduate?
         - What are Ha’s technical skills?
         - Work experience?
-        - AI Academic Advisor project?
+        - What projects has Ha worked on?
+        - What is the standout project?
         - How can I contact Ha?
         """,
         locale,
@@ -407,7 +421,11 @@ TOOLS: list[dict] = [
     {
         "name": "get_academic_advisor",
         "description": "AI Academic Advisor / V University Portal project.",
-        "phrases": ["academic advisor", "ai academic", "study planner", "c2-app-163", "university portal", "hoc vu"],
+        "phrases": [
+            "academic advisor", "ai academic", "study planner", "c2-app-163",
+            "university portal", "hoc vu", "noi bat", "noi bat nhat",
+            "flagship", "featured project", "du an hay nhat", "best project",
+        ],
         "run": tool_get_academic_advisor,
     },
     {
@@ -431,7 +449,10 @@ TOOLS: list[dict] = [
     {
         "name": "get_projects",
         "description": "Overview of AI, frontend, and VibeCode projects.",
-        "phrases": ["du an", "project", "portfolio", "san pham", "lam du an gi"],
+        "phrases": [
+            "du an", "cac du an", "nhung du an", "du an da lam",
+            "project", "portfolio", "san pham", "lam du an gi",
+        ],
         "run": tool_get_projects,
     },
     {

@@ -36,7 +36,9 @@ export default function ChatWidget({ locale, t }: { locale: Locale; t: UiDict["c
   const [pos, setPos] = useState<Pos | null>(null);
   const [dragging, setDragging] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const posRef = useRef<Pos | null>(null);
+  const busyRef = useRef(false);
   const dragRef = useRef<{
     id: number;
     sx: number;
@@ -80,9 +82,10 @@ export default function ChatWidget({ locale, t }: { locale: Locale; t: UiDict["c
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  async function send() {
-    const text = input.trim();
-    if (!text || busy) return;
+  async function sendText(raw: string) {
+    const text = raw.trim();
+    if (!text || busyRef.current) return;
+    busyRef.current = true;
     setInput("");
     setMessages((m) => [...m, { role: "user", text }, { role: "bot", text: "" }]);
     setBusy(true);
@@ -151,8 +154,19 @@ export default function ChatWidget({ locale, t }: { locale: Locale; t: UiDict["c
       setMessages((m) => [...m.slice(0, -1), { role: "bot", text: t.offline }]);
     } finally {
       clearTimeout(timer);
+      busyRef.current = false;
       setBusy(false);
     }
+  }
+
+  function send() {
+    void sendText(input);
+  }
+
+  function fillQuestion(question: string) {
+    if (busyRef.current) return;
+    setInput(question);
+    requestAnimationFrame(() => inputRef.current?.focus());
   }
 
   function onPointerDown(e: React.PointerEvent<HTMLButtonElement>) {
@@ -225,7 +239,11 @@ export default function ChatWidget({ locale, t }: { locale: Locale; t: UiDict["c
             {messages.map((msg, i) =>
               msg.text ? (
                 <div key={i} className={`chat-bubble ${msg.role}`}>
-                  {msg.role === "bot" ? <ChatMarkdown text={msg.text} /> : msg.text}
+                  {msg.role === "bot" ? (
+                    <ChatMarkdown text={msg.text} onAsk={fillQuestion} askDisabled={busy} />
+                  ) : (
+                    msg.text
+                  )}
                 </div>
               ) : null,
             )}
@@ -241,6 +259,7 @@ export default function ChatWidget({ locale, t }: { locale: Locale; t: UiDict["c
             }}
           >
             <input
+              ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={t.placeholder}

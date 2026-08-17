@@ -43,7 +43,15 @@ function inline(text: string, keyPrefix: string): ReactNode[] {
   return nodes;
 }
 
-export default function ChatMarkdown({ text }: { text: string }) {
+export default function ChatMarkdown({
+  text,
+  onAsk,
+  askDisabled,
+}: {
+  text: string;
+  onAsk?: (question: string) => void;
+  askDisabled?: boolean;
+}) {
   const lines = text.replace(/\r\n/g, "\n").split("\n");
   const blocks: ReactNode[] = [];
   let i = 0;
@@ -70,11 +78,27 @@ export default function ChatMarkdown({ text }: { text: string }) {
         i += 1;
       }
       const listKey = b;
+      const asks = Boolean(onAsk) && items.every((item) => item.trim().endsWith("?"));
       blocks.push(
-        <ul key={listKey}>
-          {items.map((item, j) => (
-            <li key={j}>{inline(item, `${listKey}-${j}`)}</li>
-          ))}
+        <ul key={listKey} className={asks ? "chat-asks" : undefined}>
+          {items.map((item, j) => {
+            const question = item.trim();
+            if (asks && onAsk) {
+              return (
+                <li key={j}>
+                  <button
+                    type="button"
+                    className="chat-ask"
+                    disabled={askDisabled}
+                    onClick={() => onAsk(question)}
+                  >
+                    {inline(question, `${listKey}-${j}`)}
+                  </button>
+                </li>
+              );
+            }
+            return <li key={j}>{inline(item, `${listKey}-${j}`)}</li>;
+          })}
         </ul>,
       );
       b += 1;
